@@ -27,6 +27,30 @@ export const routerConfig =  [
 				path: `${prefix}/home`,
 				element: lazy(() => import('../pages/home')),
 			},
+			{
+				name: '灯光',
+				tag: 'Route',
+				path: `${prefix}/light`,
+				element: lazy(() => import('../pages/lights')),
+			},
+			{
+				name: '自定义图形',
+				tag: 'Route',
+				path: `${prefix}/self`,
+				element: lazy(() => import('../pages/myGeometry')),
+			},
+			{
+				name: '加载模型',
+				tag: 'Route',
+				path: `${prefix}/model`,
+				element: lazy(() => import('../pages/model')),
+			},
+			{
+				name: '加载任务模型',
+				tag: 'Route',
+				path: `${prefix}/person`,
+				element: lazy(() => import('../pages/person')),
+			},
 			
 		],
 	},
