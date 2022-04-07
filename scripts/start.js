@@ -35,6 +35,9 @@ const createDevServerConfig = require('../config/webpackDevServer.config');
 const getClientEnvironment = require('../config/env');
 const react = require(require.resolve('react', { paths: [paths.appPath] }));
 
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
+
 const env = getClientEnvironment(paths.publicUrlOrPath.slice(0, -1));
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const isInteractive = process.stdout.isTTY;
@@ -80,7 +83,8 @@ checkBrowsers(paths.appPath, isInteractive)
       return;
     }
 
-    const config = configFactory('development');
+    let config = configFactory('development');
+    // config = smp.wrap(config)
     const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
     const appName = require(paths.appPackageJson).name;
 

@@ -2,9 +2,9 @@
  * 
  */
 import {
-    PerspectiveCamera, 
-    Scene, 
-    WebGLRenderer, 
+    PerspectiveCamera,
+    Scene,
+    WebGLRenderer,
     Vector3,
     Object3D,
     OrthographicCamera,
@@ -16,8 +16,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 interface Iparams {
     dom: HTMLElement;
     openStats?: Boolean;
-    openOrbitControls?:Boolean;
-    camera?:string;
+    openOrbitControls?: Boolean;
+    camera?: string;
 }
 
 /**
@@ -39,67 +39,72 @@ class EThree {
     private orbitControls?: OrbitControls;
     constructor(params: Iparams) {
         this.dom = params.dom;
-        this.openStats = params.openStats === undefined? this.openStats:params.openStats;
-        this.openOrbitControls = params.openOrbitControls === undefined? this.openOrbitControls:params.openOrbitControls;
+        this.openStats = params.openStats === undefined ? this.openStats : params.openStats;
+        this.openOrbitControls = params.openOrbitControls === undefined ? this.openOrbitControls : params.openOrbitControls;
         this.renderer = new WebGLRenderer({
             antialias: true
         });
         this.renderer.shadowMap.enabled = true;
         this.scene = new Scene();
-        if(params.camera === 'OrthographicCamera') {
-            this.camera = new OrthographicCamera( 
-                this.dom.offsetWidth / - 2, 
-                this.dom.offsetWidth / 2, 
-                this.dom.offsetHeight / 2, 
-                this.dom.offsetHeight / - 2, 
-                1, 
-            1000 );
-        }else {
-            this.camera = new PerspectiveCamera(45, this.dom.offsetWidth/this.dom.offsetHeight, 1, 1000);
+        if (params.camera === 'OrthographicCamera') {
+            this.camera = new OrthographicCamera(
+                this.dom.offsetWidth / - 2,
+                this.dom.offsetWidth / 2,
+                this.dom.offsetHeight / 2,
+                this.dom.offsetHeight / - 2,
+                1,
+                1000);
+                this.camera.position.set(300, 300, 300);
+            
+        } else {
+            this.camera = new PerspectiveCamera(45, this.dom.offsetWidth / this.dom.offsetHeight, 1, 1000);
+            // 相机的位置
+            this.camera.position.set(0, 50, 200);
+            
+
         }
-          
-        // 相机的位置
-        this.camera.position.set(0,50,200);
         // 相机看向哪个地点
-        this.camera.lookAt(new Vector3(0,0,0));
+        this.camera.lookAt(new Vector3(0, 0, 0));
         // 怎么去看，斜着看还是正着看
-        this.camera.up = new Vector3(0,1,0);
+        this.camera.up = new Vector3(0, 1, 0);
 
-       
-        this.renderer.setSize(this.dom.offsetWidth-10, this.dom.offsetHeight-10, true);
 
-  
+
+        this.renderer.setSize(this.dom.offsetWidth - 10, this.dom.offsetHeight - 10, true);
+
+
         // this.scene.add(box);
 
         // 添加性能监听器
-        if(this.openStats) {
+        if (this.openStats) {
             this.addStats();
         }
-      
+
         // // 设计背景颜色
         // this.renderer.setClearColor("#FFF");
         // // 清除颜色
         // this.renderer.clearColor();
         this.dom.appendChild(this.renderer.domElement);
         this.renderer.render(this.scene, this.camera);
-
+        if (this.openOrbitControls) {
+            this.addOrbitControls();
+        }
         const renderFun = () => {
             // box.position.x += -0.01;
             // box.rotation.y += 0.001;
             // this.camera.position.x += -0.01;
             this.renderer.render(this.scene, this.camera);
-            if(this.openStats) {
+            if (this.openStats) {
                 this.stats?.update();
             }
-            if(this.openOrbitControls) {
-                this.addOrbitControls();
+            if (this.openOrbitControls) {
                 this.orbitControls?.update();
             }
             requestAnimationFrame(renderFun);
         }
 
         renderFun();
-        
+
     }
     addStats() {
         this.stats = Stats();

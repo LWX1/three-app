@@ -28,6 +28,9 @@ const printHostingInstructions = require('react-dev-utils/printHostingInstructio
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const printBuildError = require('react-dev-utils/printBuildError');
 
+const SpeedMeasurePlugin = require("speed-measure-webpack-plugin");
+const smp = new SpeedMeasurePlugin();
+
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild;
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild;
@@ -48,7 +51,9 @@ const argv = process.argv.slice(2);
 const writeStatsJson = argv.indexOf('--stats') !== -1;
 
 // Generate configuration
-const config = configFactory('production');
+const config = smp.wrap(configFactory('production')) ;
+
+
 
 // We require that you explicitly set browsers and do not fall back to
 // browserslist defaults.
@@ -95,8 +100,7 @@ checkBrowsers(paths.appPath, isInteractive)
         WARN_AFTER_BUNDLE_GZIP_SIZE,
         WARN_AFTER_CHUNK_GZIP_SIZE
       );
-      console.log();
-
+     
       const appPackage = require(paths.appPackageJson);
       const publicUrl = paths.publicUrlOrPath;
       const publicPath = config.output.publicPath;

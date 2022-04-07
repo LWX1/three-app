@@ -51,6 +51,18 @@ export const routerConfig =  [
 				path: `${prefix}/person`,
 				element: lazy(() => import('../pages/person')),
 			},
+			{
+				name: '照相机',
+				tag: 'Route',
+				path: `${prefix}/camera`,
+				element: lazy(() => import('../pages/camera')),
+			},
+			{
+				name: '运动',
+				tag: 'Route',
+				path: `${prefix}/carAnimation`,
+				element: lazy(() => import('../pages/carAnimation')),
+			},
 			
 		],
 	},
